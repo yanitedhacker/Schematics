@@ -1,10 +1,16 @@
 # Third-party software
 
-The standalone runtime bundles Three.js 0.180.0 and OrbitControls (MIT). Build tools use esbuild 0.25.11 (MIT), three-bvh-csg 0.0.17 (MIT), and its three-mesh-bvh dependency (MIT).
+| Component | Where | Licence |
+| --- | --- | --- |
+| Three.js 0.180.0 and OrbitControls | `app/vendor/`, bundled into `dist/` | MIT, © 2010-2025 three.js authors. Full text in `app/vendor/THREE-LICENSE.txt` |
+| anatomy kit | `authoring/kit/`, `authoring/scripts/inline-kit.mjs` | MIT, © 2026 Ryan, https://github.com/wheresryan22/anatomy |
+| esbuild 0.25.11, three-bvh-csg 0.0.17, three-mesh-bvh | Build only, not distributed | MIT |
 
-The MIT License
+## anatomy
 
-Copyright © 2010-2025 three.js authors
+MIT License
+
+Copyright (c) 2026 Ryan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -13,13 +19,13 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

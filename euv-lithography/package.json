@@ -1,6 +1,7 @@
 {
   "name": "euv-lithography",
   "private": true,
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "author:svg": "node authoring/build.mjs --light --out=generated-light.html",
