@@ -5,7 +5,7 @@ Interactive schematic of an ASML TWINSCAN NXE:3800E EUV lithography cell (13.5 n
 ## Modes
 
 - **Drawing**: GPU-rendered isometric cutaway of 13 subsystems: overhead hoist, FOUP and load port, coater/developer track, interface and load locks, utilities, tin plasma source, illuminator, reticle stage, projection optics, twin wafer stages, scanner frame, beam transport, and CO₂ drive laser. Camera presets, explode view, EUV and CO₂ ray overlay, wafer route.
-- **3D breakdown**: 2,834 solid objects with orbit, pan and zoom. Click a part to extract it and read its function, scope and uncertainty.
+- **3D breakdown**: 2,834 solid objects with orbit, pan and zoom, in a searchable tree grouped by assembly and sub-assembly. Click a part, in 3D or in the tree, to extract it and read its function, scope and uncertainty.
 - **True scale**: 300 mm wafer, 26 × 33 mm scanned field and 104 × 132 mm mask-pattern area at nominal metric scale.
 - **Run wafers**: animated scanner cycle. 96 fields, 16.364 s per wafer, 220 wph reference.
 

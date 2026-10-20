@@ -209,10 +209,7 @@ function select(id) {
   for (const [key, b] of partButtons) b.setAttribute("aria-pressed", String(id === key));
   if (renderer) renderer.selected = id ? meta.pieces.indexOf(id) : -1;
   if (solid) solid.uniforms.selectedPart.value = id ? Object.keys(solid.meta.pieces).indexOf(id) : -1;
-  if (solidMode) {
-    objectPage = 0;
-    fillObjects();
-  }
+  if (solidMode) fillObjects();
   const info = INFO[id];
   $("part-name").textContent = info ? info[0] : "The complete cell";
   $("part-description").textContent = info
@@ -606,7 +603,7 @@ try {
 }
 
 let solidReady = null,
-  objectPage = 0,
+  objectTree = null,
   modeRequest = 0;
 async function loadSolid() {
   if (solid) return solid;
@@ -684,27 +681,77 @@ async function switchMode(on, reference = false) {
   $("loading").hidden = true;
   refresh();
 }
-function fillObjects() {
-  const q = $("object-search").value.toLowerCase(),
-    list = $("object-list"),
-    match = solid.meta.objects.filter(
-      (o) => (!selected || o.piece === selected) && o.name.toLowerCase().includes(q),
-    );
-  const pages = Math.max(1, Math.ceil(match.length / 60));
-  objectPage = Math.min(objectPage, pages - 1);
-  const fragment = document.createDocumentFragment();
-  for (const o of match.slice(objectPage * 60, objectPage * 60 + 60)) {
-    const opt = document.createElement("option");
-    opt.value = o.id;
-    opt.textContent = o.name;
-    opt.selected = o.id === solid.selected;
-    fragment.append(opt);
+// "laser.pa1.gas-duct:3" -> laser / pa1 / gas-duct; copies (#n) and tube segments (:n) share one node
+function buildObjectTree() {
+  const root = new Map();
+  for (const o of solid.meta.objects) {
+    const [piece, ...path] = o.name.split(".");
+    let level = root,
+      node;
+    for (const seg of [piece, ...path.slice(0, -1), (path.at(-1) ?? piece).replace(/[#:]\d+$/, "")]) {
+      if (!level.has(seg)) level.set(seg, { seg, ids: [], children: new Map() });
+      node = level.get(seg);
+      level = node.children;
+    }
+    node.ids.push(o.id);
   }
-  list.replaceChildren(fragment);
-  $("object-search").placeholder = `${match.length} objects${selected ? " in " + selected : ""}`;
-  $("object-page").textContent = `${objectPage + 1} / ${pages} · ${match.length} objects`;
-  $("objects-prev").disabled = objectPage === 0;
-  $("objects-next").disabled = objectPage === pages - 1;
+  return root;
+}
+function fillObjects() {
+  objectTree ??= buildObjectTree();
+  const flat = (t) => t.toLowerCase().replace(/[-_.]/g, " "),
+    q = flat($("object-search").value.trim()),
+    objects = solid.meta.objects,
+    hit = (id) =>
+      (!selected || objects[id].piece === selected) &&
+      flat(objects[id].name + " " + (INFO[objects[id].piece]?.[0] ?? "")).includes(q),
+    leaf = (id, text) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.dataset.id = id;
+      b.textContent = text;
+      b.title = objects[id].name;
+      return b;
+    };
+  let total = 0;
+  const render = (node, depth) => {
+    const ids = node.ids.filter(hit),
+      kids = [...node.children.values()].map((c) => render(c, depth + 1)).filter(Boolean),
+      count = ids.length + kids.reduce((n, k) => n + k.count, 0),
+      label = (depth ? node.seg : (INFO[node.seg]?.[0] ?? node.seg)).replace(/-/g, " ");
+    total += ids.length;
+    if (!count) return null;
+    if (!kids.length && ids.length === 1) return Object.assign(leaf(ids[0], label), { count });
+    const d = document.createElement("details"),
+      s = document.createElement("summary");
+    s.append(label, Object.assign(document.createElement("small"), { textContent: count }));
+    d.append(
+      s,
+      ...ids.map((id) => leaf(id, label + " " + (objects[id].name.match(/[#:]\d+$/)?.[0] ?? "#1"))),
+      ...kids,
+    );
+    d.open = !!q || (depth === 0 && !!selected);
+    return Object.assign(d, { count });
+  };
+  $("object-tree").replaceChildren(
+    ...Object.keys(INFO)
+      .filter((k) => objectTree.has(k))
+      .map((k) => render(objectTree.get(k), 0))
+      .filter(Boolean),
+  );
+  $("object-search").placeholder = `${total} objects${selected ? " in " + INFO[selected][0] : ""}`;
+  revealObject(solid.selected);
+}
+function revealObject(id) {
+  const tree = $("object-tree");
+  tree.querySelector("[aria-current]")?.removeAttribute("aria-current");
+  const b = tree.querySelector(`[data-id="${id}"]`);
+  if (!b) return;
+  b.setAttribute("aria-current", "true");
+  for (let d = b.closest("details"); d; d = d.parentElement.closest("details")) d.open = true;
+  if (b.offsetTop < tree.scrollTop) tree.scrollTop = b.offsetTop;
+  else if (b.offsetTop + b.offsetHeight > tree.scrollTop + tree.clientHeight)
+    tree.scrollTop = b.offsetTop + b.offsetHeight - tree.clientHeight;
 }
 function chooseObject(id) {
   if (!solid) return;
@@ -714,8 +761,8 @@ function chooseObject(id) {
   showObjectDimensions(o);
   $("object-focus").disabled = !o;
   $("object-isolate").disabled = !o;
+  revealObject(id);
   if (o) {
-    $("object-list").value = id;
     solid.inspect({ kind: "object", id }, still.matches);
     announce("Inspecting " + o.name);
   } else solid.returnInspection(still.matches);
@@ -809,19 +856,11 @@ for (const b of document.querySelectorAll("[data-ref-focus]"))
   b.addEventListener("click", () => solid.focusReference(b.dataset.refFocus));
 $("mode-3d").addEventListener("click", () => switchMode(true));
 $("mode-drawing").addEventListener("click", () => switchMode(false));
-$("object-search").addEventListener("input", () => {
-  objectPage = 0;
-  fillObjects();
+$("object-search").addEventListener("input", fillObjects);
+$("object-tree").addEventListener("click", (e) => {
+  const b = e.target.closest("button[data-id]");
+  if (b) chooseObject(+b.dataset.id);
 });
-$("objects-prev").addEventListener("click", () => {
-  objectPage--;
-  fillObjects();
-});
-$("objects-next").addEventListener("click", () => {
-  objectPage++;
-  fillObjects();
-});
-$("object-list").addEventListener("change", () => chooseObject(+$("object-list").value));
 $("object-focus").addEventListener("click", () => chooseObject(solid.selected));
 $("object-isolate").addEventListener("click", () => {
   proc.stop();

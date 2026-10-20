@@ -722,16 +722,73 @@ footer {
   background: var(--card);
   font: 11px inherit;
 }
-#object-list {
-  width: 100%;
-  height: 135px;
-  font-size: 10px;
-  padding: 4px;
+.object-tree {
+  position: relative;
+  height: 220px;
+  overflow: auto;
+  border: 1px solid var(--rule);
+  background: var(--card);
+  padding: 4px 0;
+  font-size: 11px;
 }
-#object-list option {
-  padding: 4px;
+.object-tree details > :not(summary) {
+  margin-left: 12px;
+}
+.object-tree summary {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  padding: 5px 8px;
+  cursor: pointer;
+}
+.object-tree summary::before {
+  content: "▸";
+  width: 8px;
+  color: var(--muted);
+}
+.object-tree details[open] > summary::before {
+  content: "▾";
+}
+.object-tree summary::-webkit-details-marker {
+  display: none;
+}
+.object-tree summary small {
+  margin-left: auto;
+  font:
+    9px ui-monospace,
+    monospace;
+  color: var(--muted);
+}
+.object-tree > details > summary {
+  font-weight: 600;
+}
+.object-tree button {
+  display: block;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  text-align: left;
+  padding: 5px 8px 5px 22px;
+  font-size: 11px;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.object-tree summary {
+  list-style: none;
+}
+.object-tree button:focus-visible,
+.object-tree summary:focus-visible {
+  outline-offset: -2px;
+}
+.object-tree button:hover,
+.object-tree summary:hover {
+  background: var(--paper);
+}
+.object-tree button[aria-current] {
+  background: var(--accent);
+  color: var(--card);
 }
 #object-name {
   font:
@@ -763,22 +820,6 @@ footer {
 }
 #objects-panel {
   contain: layout;
-}
-.object-pages {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 3px;
-}
-.object-pages button {
-  font-size: 9px;
-  padding: 5px;
-}
-.object-pages span {
-  font:
-    8px ui-monospace,
-    monospace;
-  color: var(--muted);
 }
 
 .inspector {
