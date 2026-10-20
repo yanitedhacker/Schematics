@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "author:svg": "node authoring/build.mjs --light --out=generated-light.html",
+    "author:svg:quick": "node authoring/build.mjs --light --quick --out=generated-light.html",
     "author:shapes": "node pipeline/extract-shapes.mjs",
     "convert": "node pipeline/convert-server.mjs",
     "build:drawing": "python3 pipeline/pack_mesh.py && python3 pipeline/add_lod.py",

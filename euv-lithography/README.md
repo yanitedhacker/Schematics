@@ -63,10 +63,10 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 | --- | --- |
 | UI, text, styles, motion, evidence (`app/src/`) | None. Reload. Run `npm run build:evidence` after an evidence change. |
 | 3D geometry only | `npm run author:shapes && npm run build:3d` |
-| Drawing geometry | `npm run author:svg`, then `npm run convert`. Open http://127.0.0.1:8877, click **Compile drawing mesh**, wait for **Saved**, stop the server. Then `npm run build:drawing`. |
+| Drawing geometry | `npm run author:svg:quick` (or `author:svg` for release), then `npm run convert`. Open http://127.0.0.1:8877, click **Compile drawing mesh**, wait for **Saved**, stop the server. Then `npm run build:drawing`. |
 | Check | `npm test` (builds the single file, then 25 tests) |
 
-`author:svg` runs the full painter's-order settle over 2,834 items. It is slow. It did not finish in 25 minutes on Linux, and the original author's run never finished it either. Until that is fixed, drawing geometry changes are blocked; 3D geometry changes are not. `--fast` skips the settle and is for layout checks only.
+`author:svg` depth-sorts 2,834 items so that the painter's order holds in every explode-animation state. The full sort replays 1,387 states and takes about 30 to 40 minutes. `author:svg:quick` sorts on 63 states and takes about 90 s. Its assembled drawing is pixel-identical to the reference fixture, so use quick mode while you iterate. Run the full sort before you ship, so that mid-explode overlaps are correct. `--fast` skips the sort and is for layout checks only.
 
 ### Reproducibility
 
