@@ -1,0 +1,149 @@
+{
+  "checked": "2026-10-20",
+  "sources": {
+    "supplier": {
+      "publisher": "Silicon Valley Microelectronics",
+      "title": "300 mm silicon wafers — SV025",
+      "url": "https://svmi.com/product/300mm-silicon-wafer/",
+      "location": "Product table, SV025 row, Thickness (µm)",
+      "scope": "Supplier product SV025 only; not a universal wafer tolerance or NXE:3800E input specification",
+      "checked": "2026-10-20"
+    },
+    "nxe3400": {
+      "publisher": "ASML",
+      "title": "TWINSCAN NXE:3400B",
+      "url": "https://www.asml.com/en/products/euv-lithography-systems/twinscan-nxe3400b",
+      "location": "Key features, Productivity and Optics",
+      "scope": "NXE:3400B; NXE family reference, not a dimensional certification of NXE:3800E",
+      "checked": "2026-10-20"
+    },
+    "platform": {
+      "publisher": "ASML",
+      "title": "EUV lithography systems",
+      "url": "https://www.asml.com/en/products/euv-lithography-systems",
+      "location": "NXE systems; How does EUV work? Optical column",
+      "scope": "NXE platform; excludes the anamorphic High-NA EXE optics",
+      "checked": "2026-10-20"
+    },
+    "source2023": {
+      "publisher": "ASML; hosted by EUVL workshop",
+      "title": "EUV Industrialization, Raymond Maas et al., 2023",
+      "url": "https://euvlitho.com/2023/P62.pdf#page=16",
+      "location": "PDF page 16, throughput specification; page 17, ATP targets",
+      "scope": "NXE:3800E historical reference; 96 full fields at 30 mJ/cm²",
+      "checked": "2026-10-20"
+    },
+    "drawing": {
+      "publisher": "Supplied model",
+      "title": "Original drawing and recorded solids",
+      "url": null,
+      "location": "plan.mjs: one world unit is 1 cm; frozen source-shapes.json.gz",
+      "scope": "Schematic geometry with compressed placement; no manufacturer CAD validation",
+      "checked": "2026-10-20"
+    }
+  },
+  "evidence": [
+    {
+      "id": "wafer",
+      "label": "Wafer diameter",
+      "value": 300,
+      "unit": "mm",
+      "kind": "published",
+      "tolerance": null,
+      "source": "nxe3400",
+      "scope": "NXE:3400B; NXE family reference, not a dimensional certification of NXE:3800E",
+      "note": "Nominal NXE family reference. Edge notch, bevel and thickness are omitted."
+    },
+    {
+      "id": "wafer-thickness",
+      "label": "Wafer thickness — supplier example",
+      "value": 775,
+      "unit": "µm",
+      "kind": "published",
+      "tolerance": 25,
+      "source": "supplier",
+      "scope": "Supplier product SV025 only; not a universal wafer tolerance or NXE:3800E input specification",
+      "note": "SV025 product tolerance. Other products differ: SV026 lists ±10 µm. Thickness is not rendered in the planar comparison. A tolerance bound is not a statistical confidence interval."
+    },
+    {
+      "id": "field",
+      "label": "Full scanned exposure field",
+      "value": [26, 33],
+      "unit": "mm",
+      "kind": "published",
+      "tolerance": null,
+      "source": "nxe3400",
+      "scope": "NXE:3400B; NXE family reference, not a dimensional certification of NXE:3800E",
+      "note": "The complete scanned field, not the instantaneous slit. The source names NXE:3400B."
+    },
+    {
+      "id": "reduction",
+      "label": "Linear pattern reduction",
+      "value": 4,
+      "unit": "×",
+      "kind": "published",
+      "tolerance": null,
+      "source": "platform",
+      "scope": "NXE platform; excludes the anamorphic High-NA EXE optics",
+      "note": "Isotropic NXE reference; do not transfer this to High-NA EXE."
+    },
+    {
+      "id": "mask-pattern",
+      "label": "Corresponding mask-pattern footprint",
+      "value": [104, 132],
+      "unit": "mm",
+      "kind": "derived",
+      "tolerance": null,
+      "source": "nxe3400",
+      "dependencies": ["field", "reduction"],
+      "formula": "[26, 33] mm × 4 = [104, 132] mm",
+      "scope": "Derived NXE pattern-area comparison",
+      "note": "Patterned area only. This is not the mask substrate size. Optical clearances are not included."
+    },
+    {
+      "id": "slit",
+      "label": "Illustrated slit width",
+      "value": 2,
+      "unit": "mm",
+      "kind": "illustrative",
+      "tolerance": null,
+      "source": "drawing",
+      "scope": "Animation estimate",
+      "note": "Estimated short-axis width. No verified tolerance or NXE:3800E slit specification is assigned."
+    },
+    {
+      "id": "placement",
+      "label": "Machine layout and component dimensions",
+      "value": null,
+      "unit": "mm",
+      "kind": "unknown",
+      "tolerance": null,
+      "source": "drawing",
+      "scope": "All 2,834 supplied source items",
+      "note": "Mesh bounds are model-only measurements. Real dimensions and their uncertainty are unknown. Machine length compression is retained."
+    },
+    {
+      "id": "spacing",
+      "label": "Reference comparison spacing",
+      "value": null,
+      "unit": "mm",
+      "kind": "illustrative",
+      "tolerance": null,
+      "source": "drawing",
+      "scope": "True-scale reference view only",
+      "note": "Object sizes share a uniform metric. Their separation is for comparison, not the machine optical layout."
+    },
+    {
+      "id": "throughput",
+      "label": "Historical scanner throughput reference",
+      "value": 220,
+      "unit": "wph",
+      "kind": "published",
+      "tolerance": null,
+      "source": "source2023",
+      "scope": "Dated reference, not the latest specification",
+      "note": "The animation is calibrated to this value; it does not predict productivity."
+    }
+  ],
+  "unitBasis": "1 original model unit = 10 mm; no guessed decompression"
+}
