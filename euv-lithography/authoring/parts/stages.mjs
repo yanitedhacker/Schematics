@@ -2,7 +2,7 @@
 // (the balance mass), and two moving-coil planar movers, each carrying a 6-DOF Lorentz short stroke, an
 // interferometer mirror block, the electrostatic burl clamp with its wafer, E-pin drives and a TIS/ILIAS fiducial
 // plate. Interferometer heads on posts read the mirror blocks; a cable slab and shuttle feed each mover.
-// Sources: research/mechanics.md Part A (Heertjes 2020, Butler 2013, Hurk 2020, Steur 2017, Jansen thesis).
+// Sources: REFERENCES.md (Heertjes 2020, Butler 2013, Hurk 2020, Steur 2017, Jansen thesis).
 import { k, G, A } from "../lib.mjs";
 
 const PIECE = "stages";

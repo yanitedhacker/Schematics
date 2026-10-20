@@ -2,7 +2,7 @@
 // the illuminator; tin droplets cross the plasma point along -y from the generator on the front ledge to the catcher at the back;
 // the CO2 beam rises from the floor port, folds twice in the final focus assembly and climbs the axis through the collector's
 // hole inside the hydrogen gas cone; the light converges through the vane frame and the IF neck to the intermediate focus.
-// Sources: research/source.md (Fomenkov 2017, Purvis 2020, Cymer/ASML patents); optics from parts/illum.mjs (euv()).
+// Sources: REFERENCES.md (Fomenkov 2017, Purvis 2020, Cymer/ASML patents); optics from parts/illum.mjs (euv()).
 // DERIVED collector (solved in euv()): foci 120 apart on an axis tilted 27.1 deg from vertical toward the field facet mirror;
 // rim Ø65 and a Ø12 hole together subtend 5.5 sr, which gives a = 79.7, b = 52.5, the vertex 19.7 behind the plasma, the rim
 // plane 2.7 behind it, rim AOI 39.9 deg (sourced "approaches 45") and an IF cone half-angle of 14.8 deg.

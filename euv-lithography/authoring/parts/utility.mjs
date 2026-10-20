@@ -2,7 +2,7 @@
 // compartment and the source vessel, their backing lines dropping through the raised floor to the sub-fab dry
 // pumps, the hydrogen gas cabinet with its regulator panel feeding the source, the electronics cabinet with the
 // harness to the pumps and valves on a clamped tray, and the cooling-water manifold.
-// Sources: research/layout.md 3.3-3.6 (H2 ~600-660 slm at 400-999 kPag, 1-10 Pa in the scanner, ~100 Pa at the
+// Sources: REFERENCES.md (H2 ~600-660 slm at 400-999 kPag, 1-10 Pa in the scanner, ~100 Pa at the
 // collector, dry backing pumps and abatement in the sub-fab, 1.23-1.44 MW per installation); mechanics.md row 30.
 // Everything solid stands at y <= -172: the frame leaves first along -y and its rear parts close in by up to
 // 8.5 cm before this assembly's spring catches up (STAGGER/SPRING replay), so 9+ cm of air stays behind them.

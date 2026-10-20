@@ -89,7 +89,7 @@ export function publishBeam(ctx) {
   return ctx.shared.beam;
 }
 
-// ============ the illuminator hardware: research/mechanics.md Part C section 2; the rest engineered and marked DERIVED ============
+// ============ the illuminator hardware: sourced in REFERENCES.md; the rest engineered and marked DERIVED ============
 const PIECE = "illum";
 const T = 1.4;          // DERIVED: 14 mm Al walls; the housing sits inside the ~5 Pa H2 scanner vacuum, so it is a stiff contamination shield, not a pressure wall
 const YB = -27;         // inner face of the back wall

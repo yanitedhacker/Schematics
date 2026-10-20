@@ -1,7 +1,7 @@
 // The Trumpf CO2 drive laser in the sub-fab: two seed lasers and a pre-amplifier in the seed module (HPSM),
 // four fast-flow power amplifiers PA0-PA3 on an isolation frame (HPAC), linked stage to stage through
 // fold-mirror boxes, the beam expander and the output turret that turns the beam up into the beam transport.
-// Sourced facts are in research/source.md (Trumpf EUV drive-laser page; Kaschke, EUVL Workshop 2018, S36;
+// Sourced facts are in REFERENCES.md (Trumpf EUV drive-laser page; Kaschke, EUVL Workshop 2018, S36;
 // Cymer SPIE 2011/2013; WO2011075346A1). Everything else is DERIVED below.
 import { k, G, A } from "../lib.mjs";
 

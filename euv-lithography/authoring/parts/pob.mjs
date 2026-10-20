@@ -3,7 +3,7 @@
 // interferometer reference blocks and the sensor harness. Inside the POB, cut open on +y, M1-M6 fold the light in an
 // unobscured zig-zag from the mask to the wafer, each mirror on three flexure pads on a mount plate with rigid-body
 // actuators; a dynamic gas lock cone with its membrane closes the exit and takes the downward H2 purge.
-// Sources: research/mechanics.md Part C (US20260016756A1, US7151592B2, Lowisch 2012, Heil 2015, Heertjes 2020).
+// Sources: REFERENCES.md (US20260016756A1, US7151592B2, Lowisch 2012, Heil 2015, Heertjes 2020).
 import { k, G, A } from "../lib.mjs";
 
 const PIECE = "pob";

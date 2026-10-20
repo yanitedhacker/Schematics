@@ -3,7 +3,7 @@
 // maglev short stroke on Lorentz pucks; under it a flexure neck, the cooled glass plate and the electrostatic clamp
 // hold the mask face down with its pellicle. REMA blades sit just below the mask (X pair fixed, Y pair riding the scan).
 // Toward -x a vacuum robot with a two-handed gripper serves a library of EUV inner pods.
-// Sources: research/mechanics.md Part B (WO2024170186A1, US7105836, US6906789B2, US8765331B2, Brouns 2017, Entegris).
+// Sources: REFERENCES.md (WO2024170186A1, US7105836, US6906789B2, US8765331B2, Brouns 2017, Entegris).
 import { k, G, A } from "../lib.mjs";
 
 const PIECE = "reticle";

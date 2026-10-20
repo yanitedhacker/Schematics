@@ -1,7 +1,7 @@
 // Three TAS300-class 300 mm load ports bolted to the track's front face (y 130), standing on the raised floor.
 // Left: empty, kinematic plate and pins showing, port door closed. Middle: docked FOUP, door pulled in by the
 // opener, its 25 wafers seen through the shell. Right: undocked, waiting for the FOUP the OHT is lowering.
-// Sizes from research/track.md; every number not read there carries a DERIVED note.
+// Sizes from the original track research notes (not in this repo); every other number carries a DERIVED note.
 import { k, G, A } from "../lib.mjs";
 
 // SEMI / TDK numbers, cm

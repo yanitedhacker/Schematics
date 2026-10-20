@@ -35,6 +35,7 @@ Requires WebGL2, import maps and `DecompressionStream`.
 | `authoring/parts/` | The 14 procedural assemblies, one module each |
 | `authoring/plan.mjs` | World units (1 unit = 1 cm), camera, assembly envelopes, optical points, ports |
 | `authoring/model.mjs` | Published facts and sources used by the drawing |
+| `authoring/REFERENCES.md` | Every web source, patent and paper cited in `authoring/`, with the modules that cite it |
 | `authoring/lib.mjs`, `authoring/kit/` | Geometry helpers: slabs, turned bodies, tubes, isometric projection, audit |
 | `source-shapes.json.gz` | Frozen snapshot of every recorded shape (2,834 items) |
 | `fixtures/original-light.html.gz` | The reference SVG drawing that the shipped drawing mesh was compiled from |
@@ -81,7 +82,7 @@ Checked on Linux against the shipped buffers:
 
 The machine is a **schematic**, not manufacturer CAD. Heights are retained and lengths are compressed. Every value carries a source and a label: published, derived, illustrative or unknown. A missing tolerance means unknown, not zero. Parts carry `// DERIVED:` comments wherever the geometry was engineered from physics and constraints and not taken from a source. Only the wafer, field and mask comparison in True scale is to nominal scale. See [DIMENSION-SOURCES.md](DIMENSION-SOURCES.md).
 
-Sources: ASML NXE:3800E and NXE:3400B product pages, ASML EUV platform pages, ZEISS SMT EUV optics, ASML 2024 annual report (SEC 20-F), Maas et al., *EUV Industrialization*, EUVL Workshop 2023, and the patents and papers cited in each part module.
+Sources: ASML NXE:3800E and NXE:3400B product pages, ASML EUV platform pages, ZEISS SMT EUV optics, ASML 2024 annual report (SEC 20-F), Maas et al., *EUV Industrialization*, EUVL Workshop 2023, and the patents and papers indexed in [authoring/REFERENCES.md](authoring/REFERENCES.md). The original per-subsystem research notes are not in this repo, so 9 paper citations have no recorded link yet.
 
 ## Geometry
 

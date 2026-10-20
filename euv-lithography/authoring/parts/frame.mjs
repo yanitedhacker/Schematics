@@ -2,8 +2,8 @@
 // from, and the vacuum chamber skin cut away on the near (+y) side and along the top front edge: the back wall
 // is a portal (end panels and a top band) so the pumps behind it show, the end walls and roof keep their back
 // strips, and every cut face shows the skin's thickness.
-// Sources: research/mechanics.md rows 30-33 (base frame bolted to the floor carries the airmounts, Heertjes 2020;
-// vacuum chamber 7,600 kg; scanner 64,380 kg); research/layout.md (base frame ~0.5-1 m tall, ESTIMATED).
+// Sources: REFERENCES.md (base frame bolted to the floor carries the airmounts, Heertjes 2020;
+// vacuum chamber 7,600 kg; scanner 64,380 kg); REFERENCES.md (base frame ~0.5-1 m tall, ESTIMATED).
 // Geometry the frame must leave free for its neighbours' explode paths: the frame leaves first along -y, so
 // nothing of it may stand at y > the interior envelopes inside their x/z ranges (near columns sit at the x ends).
 import { k, G, A } from "../lib.mjs";
