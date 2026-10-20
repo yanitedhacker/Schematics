@@ -18,6 +18,7 @@ async function load(url) {
   if (!response.ok) throw new Error("Cannot load local asset " + url + " (" + response.status + ")");
   return response;
 }
+$("loading").textContent = "Reading model data…";
 const [meta, data] = await Promise.all(
   ["data/mesh-meta.json", "data/reference-data.json"].map((u) => load(u).then((r) => r.json())),
 ).catch((e) => {
@@ -581,7 +582,9 @@ window.litho = {
   },
 };
 try {
+  $("loading").textContent = "Decoding drawing geometry…";
   const [vertices, indices] = await Promise.all([unpack("machine.vertices"), unpack("machine.indices")]);
+  $("loading").textContent = "Preparing the GPU drawing…";
   renderer = new Renderer($("machine"), meta, vertices, indices, data);
   renderer.onResize = refresh;
   renderer.onLoss = () => {
