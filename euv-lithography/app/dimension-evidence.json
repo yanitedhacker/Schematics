@@ -68,7 +68,10 @@
     {
       "id": "field",
       "label": "Full scanned exposure field",
-      "value": [26, 33],
+      "value": [
+        26,
+        33
+      ],
       "unit": "mm",
       "kind": "published",
       "tolerance": null,
@@ -90,12 +93,18 @@
     {
       "id": "mask-pattern",
       "label": "Corresponding mask-pattern footprint",
-      "value": [104, 132],
+      "value": [
+        104,
+        132
+      ],
       "unit": "mm",
       "kind": "derived",
       "tolerance": null,
       "source": "nxe3400",
-      "dependencies": ["field", "reduction"],
+      "dependencies": [
+        "field",
+        "reduction"
+      ],
       "formula": "[26, 33] mm × 4 = [104, 132] mm",
       "scope": "Derived NXE pattern-area comparison",
       "note": "Patterned area only. This is not the mask substrate size. Optical clearances are not included."

@@ -1,0 +1,23 @@
+{
+  "facts": {
+    "wavelength_nm": 13.5,
+    "na": 0.33,
+    "reduction": 4,
+    "field_mm": [
+      26,
+      33
+    ],
+    "pob_mirrors": 6,
+    "wph": 220,
+    "dose_mj_cm2": 30,
+    "wafer_mm": 300,
+    "fields_per_wafer": 96
+  },
+  "referenceStatus": "Dated NXE:3800E 220 wph configuration, 2024/2025. Geometry remains schematic.",
+  "generalSourceReference": {
+    "droplet_um": 25,
+    "droplet_speed_ms": 70,
+    "droplet_rate_hz": 50000,
+    "status": "General ASML educational source figures; not a verified 3800E operating recipe."
+  }
+}

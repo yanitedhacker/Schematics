@@ -1,0 +1,21 @@
+{
+  "name": "euv-lithography",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "author:svg": "node authoring/build.mjs --light --out=generated-light.html",
+    "author:shapes": "node pipeline/extract-shapes.mjs",
+    "convert": "node pipeline/convert-server.mjs",
+    "build:drawing": "python3 pipeline/pack_mesh.py && python3 pipeline/add_lod.py",
+    "build:3d": "node pipeline/build-3d.mjs",
+    "build:evidence": "node pipeline/export-evidence.mjs",
+    "build:single": "node pipeline/build-single.mjs",
+    "serve": "python3 -m http.server 8000 --bind 127.0.0.1 -d app",
+    "test": "node pipeline/build-single.mjs && node --test tests/*.test.mjs"
+  },
+  "devDependencies": {
+    "three": "0.180.0",
+    "esbuild": "0.25.11",
+    "three-bvh-csg": "0.0.17"
+  }
+}

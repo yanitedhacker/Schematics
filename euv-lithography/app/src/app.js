@@ -7,6 +7,13 @@ const setText = (e, t) => {
 };
 const $ = (id) => document.getElementById(id);
 async function load(url) {
+  const inline = document.querySelector(`script[data-asset="${url}"]`);
+  if (inline) {
+    const s = atob(inline.textContent.trim()),
+      a = new Uint8Array(s.length);
+    for (let i = 0; i < s.length; i++) a[i] = s.charCodeAt(i);
+    return new Response(a);
+  }
   const response = await fetch(url);
   if (!response.ok) throw new Error("Cannot load local asset " + url + " (" + response.status + ")");
   return response;

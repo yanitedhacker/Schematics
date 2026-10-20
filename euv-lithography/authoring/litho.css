@@ -1,0 +1,363 @@
+.rp {
+  --lc-blend: screen;
+  --lc-button-hover: #232323;
+  --lc-button-ring: #ffffff14;
+  --lc-part-ring: #ffffff10;
+  --lc-part-hover: #ffffff0a;
+  --lc-lamp-off: #4a4a4a;
+  --lc-lamp-on: #ff8a3c;
+  --lc-lamp-glow: #ff7a2a88;
+  --lc-lamp-armed: #ffcf6a;
+  --lc-rim: #ffb46e;
+  --lc-rim-soft: #ff8a3c;
+  --lc-rim-soft-share: 0.45;
+  --lc-flash-0: #fff4e6;
+  --lc-flash-1: #ffd2a066;
+  --lc-flash-2: #ff9a5a22;
+  --lc-flash-3: #ff9a5a00;
+  --lc-deck-0: #ffcf98;
+  --lc-deck-1: #ff8a3abf;
+  --lc-deck-2: #b34a1247;
+  --lc-deck-3: #5a220800;
+  --lc-deck-share: 1;
+}
+
+[data-theme="light"] .rp {
+  --lc-blend: normal;
+  --lc-button-hover: #f0f0ed;
+  --lc-button-ring: #0000001a;
+  --lc-part-ring: #00000014;
+  --lc-part-hover: #0000000a;
+  --lc-lamp-off: #c4c4c4;
+  --lc-lamp-on: #d9480f;
+  --lc-lamp-glow: #d9480f55;
+  --lc-lamp-armed: #c99400;
+  --lc-rim: #c2410c;
+  --lc-rim-soft: #ea580c;
+  --lc-rim-soft-share: 0.25;
+  --lc-flash-0: #ffd9b0;
+  --lc-flash-1: #ffb07a44;
+  --lc-flash-2: #ff8a4a14;
+  --lc-flash-3: #ff8a4a00;
+  --lc-deck-0: #c2410c;
+  --lc-deck-1: #ea580c8c;
+  --lc-deck-2: #f9731633;
+  --lc-deck-3: #f9731600;
+  --lc-deck-share: 0.45;
+}
+
+.rp .iso-plate {
+  padding: 52px 24px 64px;
+  overflow: hidden;
+}
+
+.lc-stage {
+  position: relative;
+  border-radius: 10px;
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: transform;
+}
+
+.lc-stage:focus-visible {
+  outline: 1px solid var(--anatomy-muted);
+  outline-offset: 6px;
+}
+
+.lc-stage > svg,
+.lc-stage > canvas,
+.lc-stage > div {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lc-front,
+.lc-gl,
+.lc-glow,
+.lc-veil,
+.lc-flash {
+  position: absolute;
+  inset: 0;
+  height: 100% !important;
+}
+
+.lc-gl,
+.lc-glow,
+.lc-veil,
+.lc-flash {
+  pointer-events: none;
+}
+
+.lc-gl,
+.lc-glow,
+.lc-veil {
+  mix-blend-mode: var(--lc-blend);
+}
+
+.lc-glow {
+  overflow: visible;
+}
+
+.lc-front {
+  pointer-events: none;
+  overflow: visible;
+}
+
+.lc-front .it {
+  pointer-events: visiblePainted;
+}
+
+.lc-flash {
+  opacity: 0;
+  mix-blend-mode: var(--lc-blend);
+  background: radial-gradient(circle closest-side at var(--gx) var(--gy), var(--lc-flash-0) 0%, var(--lc-flash-1) 24%, var(--lc-flash-2) 56%, var(--lc-flash-3) 100%);
+}
+
+.lc-shadow {
+  opacity: 0.45;
+}
+
+.tb-body {
+  fill: var(--anatomy-shade-2);
+  stroke: none;
+}
+
+.tb-shine {
+  fill: var(--anatomy-top);
+  stroke: none;
+}
+
+.tb-shade {
+  fill: var(--anatomy-shade-0);
+  stroke: none;
+}
+
+.lc-stage[data-focus] .it:not([data-on]):not([data-piece="stand"]) {
+  --anatomy-hi: var(--anatomy-mid);
+  --anatomy-mid: var(--anatomy-lo);
+}
+
+.lc-stage[data-focus] .it[data-piece="stand"] {
+  --anatomy-mid: var(--anatomy-lo);
+}
+
+.it[data-on] {
+  --anatomy-hi: var(--anatomy-lit);
+  --anatomy-mid: var(--anatomy-hi);
+}
+
+.it[data-on] .iso-top,
+.it[data-on] .tb-shine {
+  fill: var(--anatomy-lit-top);
+}
+
+.it[data-on] .iso-shade,
+.it[data-on] .tb-body {
+  fill: var(--anatomy-lit-shade);
+}
+
+.it[data-on] [data-seamless] > .iso-shade {
+  stroke: var(--anatomy-lit-shade);
+}
+
+.it[data-on] [data-seamless] > .iso-top {
+  stroke: var(--anatomy-lit-top);
+}
+
+.lc-controls {
+  position: absolute;
+  left: 20px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-family: var(--anatomy-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--anatomy-muted);
+}
+
+.lc-run {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 13px 0 11px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--anatomy-face);
+  color: var(--anatomy-strong);
+  font: inherit;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--lc-button-ring);
+  transition: background 200ms var(--anatomy-ease), color 200ms var(--anatomy-ease), transform 160ms var(--anatomy-ease);
+}
+
+.lc-run:hover {
+  background: var(--lc-button-hover);
+}
+
+.lc-run:active {
+  transform: scale(0.97);
+}
+
+.lc-run:focus-visible {
+  outline: 1px solid var(--anatomy-muted);
+  outline-offset: 3px;
+}
+
+.lc-lamp {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--lc-lamp-off);
+  box-shadow: 0 0 0 0 transparent;
+  transition: background 240ms var(--anatomy-ease), box-shadow 240ms var(--anatomy-ease);
+}
+
+.lc-run[data-state="on"] .lc-lamp {
+  background: var(--lc-lamp-on);
+  box-shadow: 0 0 10px 2px var(--lc-lamp-glow);
+}
+
+.lc-run[data-state="armed"] .lc-lamp {
+  background: var(--lc-lamp-armed);
+  box-shadow: 0 0 8px 1px var(--lc-lamp-glow);
+}
+
+.lc-parts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.lc-part {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--anatomy-muted);
+  font: 12.5px/1.3 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  cursor: pointer;
+  box-shadow: inset 0 0 0 1px var(--lc-part-ring);
+  transition: color 160ms var(--anatomy-ease), background 160ms var(--anatomy-ease);
+}
+
+.lc-part:hover,
+.lc-part:focus-visible,
+.lc-part[data-on] {
+  color: var(--anatomy-strong);
+  background: var(--lc-part-hover);
+  outline: none;
+}
+
+.lc-num {
+  font-family: var(--anatomy-mono);
+  font-size: 10px;
+  color: var(--anatomy-muted);
+}
+
+@media (max-width: 640px) {
+  .rp .iso-plate {
+    padding: 48px 8px 88px;
+  }
+
+  .rp .iso-plate-corner[data-corner="readout"] {
+    bottom: 46px;
+    right: 0;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .lc-stage[data-focus] ~ .lc-controls .lc-hint {
+    visibility: hidden;
+  }
+
+  .lc-controls {
+    left: 14px;
+    bottom: 14px;
+    gap: 10px;
+    max-width: calc(100% - 28px);
+    flex-wrap: wrap;
+  }
+
+  .lc-hint {
+    font-size: 9.5px;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rp * {
+    transition: none !important;
+  }
+}
+
+.lc-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.lc-rim {
+  fill: none;
+  stroke: var(--lc-rim);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  opacity: var(--rim, 0);
+  pointer-events: none;
+}
+
+.iso-svg .lc-rim-soft {
+  stroke: var(--lc-rim-soft);
+  stroke-width: 7;
+  vector-effect: none;
+  filter: blur(4px);
+  opacity: calc(var(--rim, 0) * var(--lc-rim-soft-share));
+}
+
+.lc-deckglow {
+  opacity: calc(var(--deck-glow, 0) * var(--lc-deck-share));
+  mix-blend-mode: var(--lc-blend);
+  pointer-events: none;
+}
+
+.lc-stop-0 {
+  stop-color: var(--lc-deck-0);
+}
+
+.lc-stop-1 {
+  stop-color: var(--lc-deck-1);
+}
+
+.lc-stop-2 {
+  stop-color: var(--lc-deck-2);
+}
+
+.lc-stop-3 {
+  stop-color: var(--lc-deck-3);
+}
+
+.lc-void {
+  fill: var(--anatomy-shade-0);
+  stroke: none;
+}
+
+.lc-sources{display:block;margin-top:.5em;opacity:.7;font-size:.92em}
+
+@media (max-width: 520px){.lc-hint{display:none}}

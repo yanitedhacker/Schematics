@@ -11,47 +11,81 @@ Interactive schematic of an ASML TWINSCAN NXE:3800E EUV lithography cell (13.5 n
 
 ## Run
 
-The page uses ES modules and `fetch`. Browsers block both from `file://`, so serve the folder over HTTP:
+`app/` is the complete runtime. It needs no build step and no network.
 
 ```sh
-cd euv-lithography
-python3 -m http.server 8000
+python3 -m http.server 8000 -d app
 ```
 
-Open http://localhost:8000. No build step and no network access are needed. Three.js is in `vendor/`.
+Open http://localhost:8000. The page uses ES modules and `fetch`, and browsers block both from `file://`.
+
+To get one file that opens with a double-click, run `npm ci && npm run build:single`. The output is `dist/euv-lithography.html` (about 44 MB, with all geometry inlined).
+
+**iPad:** copy `app/` into Textastic (or any editor with a local web preview), open `index.html`, and use Web Preview. Or AirDrop the single file.
 
 Requires WebGL2, import maps and `DecompressionStream`.
-
-**iPad:** copy the folder into Textastic (or any editor with a local web preview), open `index.html`, and use Web Preview.
 
 ## Layout
 
 | Path | Content |
 | --- | --- |
-| `index.html` | Page structure |
-| `src/app.js` | UI, part descriptions, mode switching, frame loop |
-| `src/renderer.js` | WebGL2 drawing renderer |
-| `src/three-view.js` | 3D breakdown: camera, extraction, shaders |
-| `src/inspection-motion.js` | Critically damped spring for part extraction (ω = 11) |
-| `src/process.js` | Wafer process timing and route |
-| `src/evidence.js`, `src/evidence-ui.js` | Reference values, sources, uncertainty labels |
-| `src/reference-scene.js` | True-scale comparison geometry |
-| `data/*.json` | Mesh, solid-object and reference metadata |
-| `assets/*.bin` | Gzipped geometry buffers (drawing mesh and 3D solids) |
-| `dimension-evidence.json` | Exported dimension sources |
-| `vendor/` | Three.js 0.180.0 and OrbitControls, unmodified, MIT |
+| `app/index.html`, `app/src/` | Runtime: UI, WebGL2 drawing renderer, Three.js 3D view, process animation, evidence |
+| `app/data/`, `app/assets/` | Generated metadata and gzipped geometry buffers |
+| `app/vendor/` | Three.js 0.180.0 and OrbitControls, unmodified, MIT |
+| `authoring/parts/` | The 14 procedural assemblies, one module each |
+| `authoring/plan.mjs` | World units (1 unit = 1 cm), camera, assembly envelopes, optical points, ports |
+| `authoring/model.mjs` | Published facts and sources used by the drawing |
+| `authoring/lib.mjs`, `authoring/kit/` | Geometry helpers: slabs, turned bodies, tubes, isometric projection, audit |
+| `source-shapes.json.gz` | Frozen snapshot of every recorded shape (2,834 items) |
+| `fixtures/original-light.html.gz` | The reference SVG drawing that the shipped drawing mesh was compiled from |
+| `reference-overrides.json` | Manual corrections merged into `app/data/reference-data.json` |
+| `pipeline/` | Shape extraction, SVG to mesh compile, 3D CSG build, single-file build, evidence export |
+| `tests/` | Buffer integrity, evidence, process timing, inspection motion |
+
+## Build pipeline
+
+```
+authoring/parts/*.mjs ─┬─ author:svg ──► authoring/generated-light.html ─┐
+                       │                (or fixtures/original-light)     ├─ convert ─► build:drawing ─► app/assets/machine.*  app/data/mesh-meta.json
+                       └─ author:shapes ► source-shapes.json.gz ── build:3d ─► app/assets/solid.*    app/data/solid-meta.json
+app/src/evidence.js ── build:evidence ─► app/dimension-evidence.json  DIMENSION-SOURCES.md
+app/ ── build:single ─► dist/euv-lithography.html
+```
+
+Setup needs Node 22+, Python 3.11+ and Chromium:
+
+```sh
+npm ci
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+```
+
+| Change | Commands |
+| --- | --- |
+| UI, text, styles, motion, evidence (`app/src/`) | None. Reload. Run `npm run build:evidence` after an evidence change. |
+| 3D geometry only | `npm run author:shapes && npm run build:3d` |
+| Drawing geometry | `npm run author:svg`, then `npm run convert`. Open http://127.0.0.1:8877, click **Compile drawing mesh**, wait for **Saved**, stop the server. Then `npm run build:drawing`. |
+| Check | `npm test` (builds the single file, then 25 tests) |
+
+`author:svg` runs the full painter's-order settle over 2,834 items. It is slow. It did not finish in 25 minutes on Linux, and the original author's run never finished it either. Until that is fixed, drawing geometry changes are blocked; 3D geometry changes are not. `--fast` skips the settle and is for layout checks only.
+
+### Reproducibility
+
+Checked on Linux against the shipped buffers:
+
+- `author:shapes`: same 2,834 items and 25,624 shapes. Floats can differ in the last bit (≤1 ULP) because `Math.sin` differs by platform.
+- `build:3d` from the frozen snapshot: **byte-identical** solid buffers and metadata.
+- `convert` + `build:drawing` from the fixture: same items, groups and pieces. 1,579,959 triangles against 1,580,062 shipped (−0.007%), because browser SVG tessellation differs by platform and version.
+- `author:svg --fast`: `reference-data.json` is byte-identical.
 
 ## Accuracy
 
-The machine is a **schematic**, not manufacturer CAD. Heights are retained and lengths are compressed. Every value carries a source and a label: calibrated, estimate, derived, or schematic. A missing tolerance means unknown, not zero. Only the wafer, field, and mask comparison in True scale is to nominal scale.
+The machine is a **schematic**, not manufacturer CAD. Heights are retained and lengths are compressed. Every value carries a source and a label: published, derived, illustrative or unknown. A missing tolerance means unknown, not zero. Parts carry `// DERIVED:` comments wherever the geometry was engineered from physics and constraints and not taken from a source. Only the wafer, field and mask comparison in True scale is to nominal scale. See [DIMENSION-SOURCES.md](DIMENSION-SOURCES.md).
 
-Sources: ASML NXE:3800E and NXE:3400B product pages, ASML EUV platform pages, ZEISS SMT EUV optics, ASML 2024 annual report (SEC 20-F), and Maas et al., *EUV Industrialization*, EUVL Workshop 2023. Links are in the app and in `dimension-evidence.json`.
+Sources: ASML NXE:3800E and NXE:3400B product pages, ASML EUV platform pages, ZEISS SMT EUV optics, ASML 2024 annual report (SEC 20-F), Maas et al., *EUV Industrialization*, EUVL Workshop 2023, and the patents and papers cited in each part module.
 
 ## Geometry
 
-The `assets/` buffers are build output. The shape data and build scripts that generated them (CSG cuts with three-bvh-csg) are not in this repo, so geometry cannot be regenerated here. Runtime behaviour, text, styling and motion can be edited directly.
-
 | Buffer | Size |
 | --- | --- |
-| Drawing mesh | 1,580,062 triangles (full LOD) |
-| 3D solids | 695,535 triangles, 477,328 vertices, 2,834 objects |
+| Drawing mesh | 1,580,062 triangles at full detail, 3 LODs |
+| 3D solids | 695,535 triangles, 477,328 vertices, 2,834 objects, 15 CSG cuts |

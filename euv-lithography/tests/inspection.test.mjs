@@ -1,0 +1,11 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {InspectionMotion} from '../app/src/inspection-motion.js';
+const a={kind:'object',id:12},b={kind:'assembly',id:'pob'},c={kind:'object',id:90};
+const advance=(m,hz,seconds)=>{for(let i=0;i<Math.round(hz*seconds);i++)m.step(1/hz);};
+test('motion is time based at 60 and 120 Hz',()=>{const x=new InspectionMotion(),y=new InspectionMotion();x.request(a);y.request(a);advance(x,60,.5);advance(y,120,.5);assert.ok(Math.abs(x.amount-y.amount)<1e-10);assert.ok(x.amount>.8&&x.amount<1);advance(x,120,2);assert.equal(x.amount,1);assert.equal(x.moving,false);});
+test('return reverses continuously and ends at exact neutral',()=>{const m=new InspectionMotion();m.request(a);advance(m,120,.25);const before=m.amount;m.close();assert.equal(m.amount,before);advance(m,120,3);assert.equal(m.current,null);assert.equal(m.amount,0);assert.equal(m.moving,false);});
+test('rapid changes return old geometry before using latest selection',()=>{const m=new InspectionMotion();m.request(a);advance(m,120,.3);m.request(b);m.request(c);assert.deepEqual(m.current,a);let sawC=false;for(let i=0;i<600;i++){const old=m.current;m.step(1/120);if(m.current===c&&!sawC){assert.equal(m.amount,0);assert.deepEqual(old,a);sawC=true;}}assert.ok(sawC);assert.equal(m.current,c);assert.equal(m.amount,1);});
+test('reduced motion settles immediately and reset clears pending state',()=>{const m=new InspectionMotion();m.request(a,true);assert.equal(m.amount,1);assert.equal(m.moving,false);m.request(b);m.reset();advance(m,120,3);assert.equal(m.current,null);m.request(c,true);assert.equal(m.current,c);m.close(true);assert.equal(m.current,null);assert.equal(m.amount,0);});
+test('same selection reverses a pending return',()=>{const m=new InspectionMotion();m.request(a);advance(m,120,.5);m.close();advance(m,120,.1);m.request(a);advance(m,120,2);assert.equal(m.current,a);assert.equal(m.amount,1);});
+test('motion preference change settles the latest queued selection',()=>{const m=new InspectionMotion();m.request(a,true);m.request(b);m.settle();assert.equal(m.current,b);assert.equal(m.amount,1);assert.equal(m.moving,false);m.close();m.settle();assert.equal(m.current,null);assert.equal(m.amount,0);});
