@@ -82,7 +82,7 @@ Checked on Linux against the shipped buffers:
 
 The machine is a **schematic**, not manufacturer CAD. Heights are retained and lengths are compressed. Every value carries a source and a label: published, derived, illustrative or unknown. A missing tolerance means unknown, not zero. Parts carry `// DERIVED:` comments wherever the geometry was engineered from physics and constraints and not taken from a source. Only the wafer, field and mask comparison in True scale is to nominal scale. See [DIMENSION-SOURCES.md](DIMENSION-SOURCES.md).
 
-Sources: ASML NXE:3800E and NXE:3400B product pages, ASML EUV platform pages, ZEISS SMT EUV optics, ASML 2024 annual report (SEC 20-F), Maas et al., *EUV Industrialization*, EUVL Workshop 2023, and the patents and papers indexed in [authoring/REFERENCES.md](authoring/REFERENCES.md). The original per-subsystem research notes are not in this repo, so 9 paper citations have no recorded link yet.
+Sources: ASML NXE:3800E and NXE:3400B product pages, ASML EUV platform pages, ZEISS SMT EUV optics, ASML 2024 annual report (SEC 20-F), Maas et al., *EUV Industrialization*, EUVL Workshop 2023, and the patents and papers indexed in [authoring/REFERENCES.md](authoring/REFERENCES.md). The original per-subsystem research notes are not in this repo; paper citations were re-resolved from the publishers, and the match column says how sure each one is.
 
 ## Geometry
 
