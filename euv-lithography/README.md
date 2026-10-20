@@ -11,19 +11,26 @@ Interactive schematic of an ASML TWINSCAN NXE:3800E EUV lithography cell (13.5 n
 
 ## Run
 
-`app/` is the complete runtime. It needs no build step and no network.
+`app/` is the complete runtime. It needs no build step and no network. You only need Python 3 (preinstalled on macOS and most Linux) and a current browser.
 
-```sh
-python3 -m http.server 8000 -d app
-```
+1. Get the repo: `git clone https://github.com/yanitedhacker/Schematics`, or **Code → Download ZIP** on GitHub and unzip it.
+2. Start a local server in this folder:
 
-Open http://localhost:8000. The page uses ES modules and `fetch`, and browsers block both from `file://`.
+   ```sh
+   cd Schematics/euv-lithography
+   python3 -m http.server 8000 -d app
+   ```
 
-To get one file that opens with a double-click, run `npm ci && npm run build:single`. The output is `dist/euv-lithography.html` (about 44 MB, with all geometry inlined).
+   On Windows, use `py -m http.server 8000 -d app`. Without Python, `npx serve app` works if Node is installed.
+3. Open http://localhost:8000. Stop the server with Ctrl+C.
+
+Double-clicking `app/index.html` does not work. The page uses ES modules and `fetch`, and browsers block both from `file://`.
+
+**Single file:** with Node installed, run `npm ci && npm run build:single`. The output, `dist/euv-lithography.html` (about 44 MB, with all geometry inlined), opens with a double-click and can be sent to anyone.
 
 **iPad:** copy `app/` into Textastic (or any editor with a local web preview), open `index.html`, and use Web Preview. Or AirDrop the single file.
 
-Requires WebGL2, import maps and `DecompressionStream`.
+**Browsers:** current Chrome, Edge, Firefox (113+) and Safari (16.4+). WebGL2, import maps and `DecompressionStream` are required. Expect about 120 MB of memory. Low-end phones may struggle with the full geometry.
 
 ## Layout
 
@@ -67,7 +74,7 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 | Drawing geometry | `npm run author:svg:quick` (or `author:svg` for release), then `npm run convert`. Open http://127.0.0.1:8877, click **Compile drawing mesh**, wait for **Saved**, stop the server. Then `npm run build:drawing`. |
 | Check | `npm test` (builds the single file, then 25 tests) |
 
-`author:svg` depth-sorts 2,834 items so that the painter's order holds in every explode-animation state. The full sort replays 1,387 states and takes about 30 to 40 minutes. `author:svg:quick` sorts on 63 states and takes about 90 s. Its assembled drawing is pixel-identical to the reference fixture, so use quick mode while you iterate. Run the full sort before you ship, so that mid-explode overlaps are correct. `--fast` skips the sort and is for layout checks only.
+`author:svg` depth-sorts 2,834 items so that the painter's order holds in every explode-animation state. The full sort replays 1,387 states. It has not been timed to completion: two runs on a 4-core Linux container passed 25 minutes (about 38 CPU-minutes) without finishing. `author:svg:quick` sorts on 63 states and takes about 90 s. Its assembled drawing is pixel-identical to the reference fixture, so use quick mode while you iterate. Run the full sort before you ship, so that mid-explode overlaps are correct. `--fast` skips the sort and is for layout checks only.
 
 ### Reproducibility
 
